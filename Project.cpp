@@ -7,6 +7,8 @@ using namespace std;
 
 #define DELAY_CONST 100000
 
+objPos myPos;
+
 bool exitFlag;
 
 void Initialize(void);
@@ -41,6 +43,8 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
+    myPos.setObjPos(10, 10, 'X');
+
     exitFlag = false;
 }
 
@@ -56,7 +60,9 @@ void RunLogic(void)
 
 void DrawScreen(void)
 {
-    MacUILib_clearScreen();    
+    MacUILib_clearScreen();
+
+    MacUILib_printf("Object: <%d, %d> with %c\n", myPos.x, myPos.y, myPos.symbol); 
 
 }
 
