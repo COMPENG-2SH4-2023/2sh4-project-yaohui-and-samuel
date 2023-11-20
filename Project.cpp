@@ -18,7 +18,7 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
-
+GameMechs mech;
 
 int main(void)
 {
@@ -43,14 +43,18 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    myPos.setObjPos(10, 10, 'X');
+    myPos.setObjPos(10, 10, '@');
+
+    mech = GameMechs(20, 10);
 
     exitFlag = false;
 }
 
 void GetInput(void)
 {
-   
+    char input = MacUILib_getChar();
+    mech.setInput(input);
+    
 }
 
 void RunLogic(void)
