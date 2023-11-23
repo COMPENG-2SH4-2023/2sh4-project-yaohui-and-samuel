@@ -6,8 +6,11 @@
 using namespace std;
 
 #define DELAY_CONST 100000
+#define ROW 10
+#define COL 20
 
-objPos myPos;
+Player* myPlayer;
+GameMechs* myGM;
 
 bool exitFlag;
 
@@ -18,7 +21,6 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
-GameMechs mech;
 
 int main(void)
 {
@@ -43,9 +45,10 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    myPos.setObjPos(10, 10, '@');
+    myGM = new GameMechs(20, 10);
+    myPlayer = new Player(myGM);
 
-    mech = GameMechs(20, 10);
+    
 
     exitFlag = false;
 }
@@ -59,15 +62,16 @@ void GetInput(void)
 
 void RunLogic(void)
 {
-    
+    myPlayer->updatePlayerDir();
 }
 
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
 
-    MacUILib_printf("Object: <%d, %d> with %c\n", myPos.x, myPos.y, myPos.symbol); 
-
+    objPos tempPos;
+    myPlayer->getPlayerPos(tempPos);
+    MacUILib_printf("BoardSize: %dx%d, Player Pos: <%d, %d> + %c\n", myGM->getBoardSizeX(), myGM->getBoardSizeY(), tempPos.x, tempPos.y, tempPos.symbol);
 }
 
 void LoopDelay(void)

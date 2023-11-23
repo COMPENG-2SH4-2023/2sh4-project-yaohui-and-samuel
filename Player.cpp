@@ -24,8 +24,8 @@ void Player::getPlayerPos(objPos &returnPos)
 
 void Player::updatePlayerDir()
 {
-    char input = 
-    // PPA3 input processing logic
+    char input = mainGameMechsRef->getInput();
+    
     if(input != 0)  // if not null character
     {
         switch(input){

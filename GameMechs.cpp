@@ -24,6 +24,9 @@ bool GameMechs::getExitFlagStatus()
 
 char GameMechs::getInput()
 {
+    if(MacUILib_hasChar() == 1){
+        input = MacUILib_getChar();
+    }
     return input;
 }
 
@@ -40,17 +43,17 @@ int GameMechs::getBoardSizeY()
 
 void GameMechs::setExitTrue()
 {
-
+    exitFlag = true;
 }
 
 void GameMechs::setInput(char this_input)
 {
-
+    input = this_input;
 }
 
 void GameMechs::clearInput()
 {
-
+    input = '/0';
 }
 
 
