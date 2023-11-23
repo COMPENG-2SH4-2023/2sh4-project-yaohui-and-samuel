@@ -42,15 +42,20 @@ void objPosArrayList::removeHead(){
         cout << "Array is empty" << endl;
         return;
     }else{
-
-        
         for(int i = 1; i < sizeList; i++){
-            
+            alist[i - 1] = alist[i];
+        }
+        sizeList--;
     }
 }
 
 void objPosArrayList::removeTail(){
-    
+    if(sizeList == 0){
+        cout << "Array is empty" << endl;
+        return;
+    }else{
+        sizeList--;
+    }
 }
 
 void objPosArrayList::getHeadElement(objPos &returnPos){
