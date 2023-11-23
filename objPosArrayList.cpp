@@ -67,7 +67,12 @@ void objPosArrayList::getTailElement(objPos &returnPos){
 }
 
 void objPosArrayList::getElement(objPos &returnPos, int index){
-    returnPos.setObjPos(aList[index].x, aList[index].y, aList[index].symbol);
+    if(index < 0 || index >= sizeList){
+        cout << "Index out of bounds" << endl;
+        return;
+    }else{
+        returnPos.setObjPos(aList[index].x, aList[index].y, aList[index].symbol);
+    }
 }
 
 // Paste your CUTE Tested implementation here.
