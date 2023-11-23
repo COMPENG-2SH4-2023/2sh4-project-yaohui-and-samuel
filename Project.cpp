@@ -1,13 +1,12 @@
 #include <iostream>
 #include "MacUILib.h"
 #include "objPos.h"
-
+#include "GameMechs.h"
+#include "Player.h"
 
 using namespace std;
 
 #define DELAY_CONST 100000
-#define ROW 10
-#define COL 20
 
 Player* myPlayer;
 GameMechs* myGM;
@@ -45,7 +44,7 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    myGM = new GameMechs(20, 10);
+    myGM = new GameMechs(26, 13);
     myPlayer = new Player(myGM);
 
     
@@ -56,7 +55,7 @@ void Initialize(void)
 void GetInput(void)
 {
     char input = MacUILib_getChar();
-    mech.setInput(input);
+    myGM->setInput(input);
     
 }
 

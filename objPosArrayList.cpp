@@ -18,32 +18,32 @@ void objPosArrayList::insertHead(objPos thisPos){
     if(sizeList < sizeArray){
         sizeList++;
         for(int i = sizeList; i > 0; i--){
-            alist[i] = alist[i - 1];
+            aList[i] = aList[i - 1];
         }
-        alist[0] = thisPos;
+        aList[0] = thisPos;
     }else if(sizeList == sizeArray){
-        cout << "Array is full" << endl;
+        //cout << "Array is full" << endl;
         return;
     }
 }
 
 void objPosArrayList::insertTail(objPos thisPos){
     if(sizeList == sizeArray){
-        cout << "Array is full" << endl;
+        //cout << "Array is full" << endl;
         return;
     }else if(sizeList < sizeArray){
         sizeList++;
-        alist[sizeList - 1] = thisPos;
+        aList[sizeList - 1] = thisPos;
     }
 }
 
 void objPosArrayList::removeHead(){
     if(sizeList == 0){
-        cout << "Array is empty" << endl;
+        //cout << "Array is empty" << endl;
         return;
     }else{
         for(int i = 1; i < sizeList; i++){
-            alist[i - 1] = alist[i];
+            aList[i - 1] = aList[i];
         }
         sizeList--;
     }
@@ -51,7 +51,7 @@ void objPosArrayList::removeHead(){
 
 void objPosArrayList::removeTail(){
     if(sizeList == 0){
-        cout << "Array is empty" << endl;
+        //cout << "Array is empty" << endl;
         return;
     }else{
         sizeList--;
@@ -68,7 +68,7 @@ void objPosArrayList::getTailElement(objPos &returnPos){
 
 void objPosArrayList::getElement(objPos &returnPos, int index){
     if(index < 0 || index >= sizeList){
-        cout << "Index out of bounds" << endl;
+        //cout << "Index out of bounds" << endl;
         return;
     }else{
         returnPos.setObjPos(aList[index].x, aList[index].y, aList[index].symbol);
