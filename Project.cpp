@@ -7,6 +7,8 @@
 using namespace std;
 
 #define DELAY_CONST 100000
+#define LENGTH 21
+#define WIDTH 11
 
 Player* myPlayer;
 GameMechs* myGM;
@@ -23,7 +25,6 @@ void CleanUp(void);
 
 int main(void)
 {
-
     Initialize();
 
     while(exitFlag == false)  
@@ -35,7 +36,6 @@ int main(void)
     }
 
     CleanUp();
-
 }
 
 
@@ -43,8 +43,8 @@ void Initialize(void)
 {
     MacUILib_init();
     MacUILib_clearScreen();
-
-    myGM = new GameMechs(26, 13);
+    
+    myGM = new GameMechs(LENGTH, WIDTH);
     myPlayer = new Player(myGM);
 
     
@@ -54,7 +54,7 @@ void Initialize(void)
 
 void GetInput(void)
 {
-    char input = MacUILib_getChar();
+    char input = myGM->getInput();
     myGM->setInput(input);
     
 }
@@ -82,6 +82,5 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();    
-  
     MacUILib_uninit();
 }
