@@ -74,39 +74,27 @@ void Player::updatePlayerDir()
 
 void Player::movePlayer()
 {
-    //objPos temp = objPos(playerPos.x, playerPos.y, playerPos.symbol);
-    objPos temp = objPos(playerPos);
-    int row = mainGameMechsRef->getBoardSizeY();
-    int col = mainGameMechsRef->getBoardSizeX();
+    int col = mainGameMechsRef->getBoardSizeY();
+    int row = mainGameMechsRef->getBoardSizeX();
 
     switch(myDir){
         case UP:
-            playerPos.x = (playerPos.x - 1 + (row - 2)) % (row - 2);
-            if(playerPos.x == 0){
-                playerPos.x = row - 3; //boundary control
-            }else if(playerPos.x == row - 2){
-                playerPos.x = 1;
+            playerPos.y = (playerPos.y - 1) % (col - 2);
+            if(playerPos.y < 0){
+                playerPos.y = col - 2;
             }
             break;
         case DOWN:
-            playerPos.x = (playerPos.x + 1) % (row - 2);
-            if(playerPos.x == 0){
-                playerPos.x = 1;
-            }
+            playerPos.y = (playerPos.y + 1) % (col - 1);
             break;
         case LEFT:
-            playerPos.y = (playerPos.y - 1 + (col - 2)) % (col - 2);
-            if(playerPos.y == 0){
-                playerPos.y = col - 3;
+            playerPos.x = (playerPos.x - 1) % (row - 2);
+            if(playerPos.x < 0){
+                playerPos.x = row - 2;
             }
             break;
         case RIGHT:
-            playerPos.y = (playerPos.y + 1) % (col - 2);
-            if(playerPos.y > (col - 3)){
-                playerPos.y = 1;
-            }else if(playerPos.y == 0){
-                playerPos.y = 1;
-            }
+            playerPos.x = (playerPos.x + 1) % (row - 2);
             break;
         case STOP:
             break;
@@ -119,16 +107,4 @@ void Player::movePlayer()
         default:
             break;
     }
-
-    // board[playerPos.x][playerPos.y] = playerPos.symbol;
-    // if(myDir != STOP){
-    //     if(temp.x == 0 || temp.x == (row - 2)){
-    //         board[temp.x][temp.y] = '#';
-    //     }
-    //     else if(temp.y == 0 || temp.y == (col - 2)){
-    //         board[temp.x][temp.y] = '#';
-    //     }else{
-    //         board[temp.x][temp.y] = ' ';
-    //     }
-    // }
 }
