@@ -119,7 +119,8 @@ void Player::movePlayer()
 
     bool consumption = checkConsumption();
     if(consumption){
-        increaseLength();
+        //increaseLength();
+        playerPos->insertHead(currHead);
         mainGameMechsRef->increaseScore();
         mainGameMechsRef->generateFood(playerPos);
     }else{
@@ -146,13 +147,7 @@ bool Player::checkConsumption()
 }
 
 
-void Player::increaseLength()
-{
-    objPos tempTail;
-    playerPos->getTailElement(tempTail);
-
-    objPos newTail;
-    newTail.setObjPos(tempTail.x, tempTail.y, 'X');
-
-    playerPos->insertTail(newTail);
-}
+// void Player::increaseLength()
+// {
+    
+// }

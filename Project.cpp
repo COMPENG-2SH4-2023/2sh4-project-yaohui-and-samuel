@@ -84,10 +84,11 @@ void DrawScreen(void)
             drawn = false;
 
             for(int k = 0; k < body->getSize(); k++){
-                body->getElement(tempBody, i);
+                body->getElement(tempBody, k);
                 if(i == tempBody.y && j == tempBody.x){
                     MacUILib_printf("%c", tempBody.symbol);
                     drawn = true;
+                    break;
                 }
             }
 
@@ -104,7 +105,6 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     }
     
-    //MacUILib_printf("BoardSize: %dx%d, Player Pos: <%d, %d> + %c\n", myGM->getBoardSizeX(), myGM->getBoardSizeY(), tempReturn.x, tempReturn.y, tempReturn.symbol);
 }
 
 void LoopDelay(void)
