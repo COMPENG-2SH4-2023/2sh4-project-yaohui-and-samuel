@@ -61,6 +61,7 @@ void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
+
 }
 
 void DrawScreen(void)
@@ -87,7 +88,6 @@ void DrawScreen(void)
                 if(i == tempBody.y && j == tempBody.x){
                     MacUILib_printf("%c", tempBody.symbol);
                     drawn = true;
-                    break;
                 }
             }
 

@@ -23,6 +23,10 @@ class Player
         void updatePlayerDir();
         void movePlayer();
 
+        bool checkCollision();
+        bool checkConsumption();
+        void increaseLength();
+
     private:
         objPosArrayList *playerPos;     
         enum Dir myDir;

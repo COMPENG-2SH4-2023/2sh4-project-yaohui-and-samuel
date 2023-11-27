@@ -117,8 +117,42 @@ void Player::movePlayer()
             break;
     }
 
-    //Insert the new head into the head of the list
-    playerPos->insertHead(currHead);
-    //Remove the tail of the list
-    playerPos->removeTail();
+    bool consumption = checkConsumption();
+    if(consumption){
+        increaseLength();
+        mainGameMechsRef->increaseScore();
+        mainGameMechsRef->generateFood(playerPos);
+    }else{
+        playerPos->insertHead(currHead); //Insert the new head into the head of the list
+        playerPos->removeTail(); //Remove the tail of the list
+    }
+    
+}
+
+
+bool Player::checkConsumption()
+{
+    objPos tempFood;
+    mainGameMechsRef->getFoodPos(tempFood);
+
+    objPos tempHead;
+    playerPos->getHeadElement(tempHead);
+
+    if(tempHead.isPosEqual(&tempFood)){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+
+void Player::increaseLength()
+{
+    objPos tempTail;
+    playerPos->getTailElement(tempTail);
+
+    objPos newTail;
+    newTail.setObjPos(tempTail.x, tempTail.y, 'X');
+
+    playerPos->insertTail(newTail);
 }
