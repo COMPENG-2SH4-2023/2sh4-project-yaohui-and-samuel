@@ -6,10 +6,13 @@ Player::Player(GameMechs* thisGMRef)
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
 
-    // more actions to be included
-    playerPos.x = mainGameMechsRef->getBoardSizeX()/2;
-    playerPos.y = mainGameMechsRef->getBoardSizeY()/2;
-    playerPos.symbol = '@';
+    // create a temp objPos to store the head first
+    objPos tempPos;
+    tempPos.setObjPos(mainGameMechsRef->getBoardSizeX()/2, mainGameMechsRef->getBoardSizeY()/2, '@');
+
+    // then insert the head into the playerPos array list
+    playerPos = new objPosArrayList();
+    playerPos->insertHead(tempPos);
 }
 
 
@@ -17,12 +20,14 @@ Player::~Player()
 {
     // delete any heap members here
     delete mainGameMechsRef;
+    delete playerPos;
 }
 
-void Player::getPlayerPos(objPos &returnPos)
+
+objPosArrayList* Player::getPlayerPos()
 {
-    returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
-    // return the reference to the playerPos arrray list
+    // return the reference to the playerPos array list
+    return playerPos;
 }
 
 void Player::updatePlayerDir()
@@ -68,33 +73,37 @@ void Player::updatePlayerDir()
             default:
                 break;
         }
-        mainGameMechsRef->setInput(0);
+        mainGameMechsRef->clearInput();
     }      
 }
 
 void Player::movePlayer()
 {
-    int col = mainGameMechsRef->getBoardSizeY();
     int row = mainGameMechsRef->getBoardSizeX();
+    int col = mainGameMechsRef->getBoardSizeY();
+    
+    objPos newHead;
+    objPos currHead;
+    playerPos->getHeadElement(currHead);
 
     switch(myDir){
         case UP:
-            playerPos.y = (playerPos.y - 1) % (col - 2);
-            if(playerPos.y < 0){
-                playerPos.y = col - 2;
+            currHead.y = (currHead.y - 1) % (col - 2);
+            if(currHead.y < 0){
+                currHead.y = col - 2;
             }
             break;
         case DOWN:
-            playerPos.y = (playerPos.y + 1) % (col - 1);
+            currHead.y = (currHead.y + 1) % (col - 1);
             break;
         case LEFT:
-            playerPos.x = (playerPos.x - 1) % (row - 2);
-            if(playerPos.x < 0){
-                playerPos.x = row - 2;
+            currHead.x = (currHead.x - 1) % (row - 2);
+            if(currHead.x < 0){
+                currHead.x = row - 2;
             }
             break;
         case RIGHT:
-            playerPos.x = (playerPos.x + 1) % (row - 2);
+            currHead.x = (currHead.x + 1) % (row - 2);
             break;
         case STOP:
             break;
@@ -107,4 +116,9 @@ void Player::movePlayer()
         default:
             break;
     }
+
+    //Insert the new head into the head of the list
+    playerPos->insertHead(currHead);
+    //Remove the tail of the list
+    playerPos->removeTail();
 }

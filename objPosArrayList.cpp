@@ -15,7 +15,7 @@ int objPosArrayList::getSize(){
 }
 
 void objPosArrayList::insertHead(objPos thisPos){
-    if(sizeList < sizeArray){
+    if(sizeList < sizeArray && sizeList >= 0){
         sizeList++;
         for(int i = sizeList; i > 0; i--){
             aList[i] = aList[i - 1];
@@ -31,7 +31,7 @@ void objPosArrayList::insertTail(objPos thisPos){
     if(sizeList == sizeArray){
         //cout << "Array is full" << endl;
         return;
-    }else if(sizeList < sizeArray){
+    }else if(sizeList < sizeArray && sizeList >= 0){
         sizeList++;
         aList[sizeList - 1] = thisPos;
     }

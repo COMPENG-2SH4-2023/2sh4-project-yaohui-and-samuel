@@ -43,9 +43,12 @@ void Initialize(void)
     myGM = new GameMechs(26, 13);
     myPlayer = new Player(myGM);
 
-    objPos tempReturn = objPos();
-    myPlayer->getPlayerPos(tempReturn);
-    
+    objPosArrayList* tempPlayerPos;
+    tempPlayerPos = myPlayer->getPlayerPos();
+
+    myGM->generateFood(tempPlayerPos);
+
+    srand(time(NULL));
 }
 
 void GetInput(void)
@@ -58,36 +61,48 @@ void RunLogic(void)
 {
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
-
-    objPos tempReturn = objPos();
-    myPlayer->getPlayerPos(tempReturn);
-    
 }
 
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
 
-    objPos tempReturn = objPos();
-    myPlayer->getPlayerPos(tempReturn);
+    bool drawn;
+
+    objPosArrayList* body;
+    body = myPlayer->getPlayerPos();
+    objPos tempBody;
+
+    objPos tempFood;
+    myGM->getFoodPos(tempFood);
 
     //Draw the board
     for(int i = 0; i < myGM->getBoardSizeY(); i++){
         for(int j = 0; j < myGM->getBoardSizeX(); j++){
+
+            drawn = false;
+
+            for(int k = 0; k < body->getSize(); k++){
+                body->getElement(tempBody, i);
+                if(i == tempBody.y && j == tempBody.x){
+                    MacUILib_printf("%c", tempBody.symbol);
+                    drawn = true;
+                    break;
+                }
+            }
+
             if((i == 0 || i == myGM->getBoardSizeY() - 1) || (j == 0 || j == myGM->getBoardSizeX() - 1)){
                MacUILib_printf("#");
-            }else if(i == tempReturn.y && j == tempReturn.x){
-               MacUILib_printf("%c", tempReturn.symbol);
+            }else if(i == tempFood.y && j == tempFood.x){
+               MacUILib_printf("%c", tempFood.symbol);
             }else{
                 MacUILib_printf(" ");
             }
         }
         MacUILib_printf("\n");
     }
-    objPos tempPos;
-    myPlayer->getPlayerPos(tempPos);
-    MacUILib_printf("BoardSize: %dx%d, Player Pos: <%d, %d> + %c\n", myGM->getBoardSizeX(), myGM->getBoardSizeY(), tempPos.x, tempPos.y, tempPos.symbol);
-    MacUILib_printf("%d, %d", myGM->getBoardSizeX(), myGM->getBoardSizeY());
+    
+    //MacUILib_printf("BoardSize: %dx%d, Player Pos: <%d, %d> + %c\n", myGM->getBoardSizeX(), myGM->getBoardSizeY(), tempReturn.x, tempReturn.y, tempReturn.symbol);
 }
 
 void LoopDelay(void)
