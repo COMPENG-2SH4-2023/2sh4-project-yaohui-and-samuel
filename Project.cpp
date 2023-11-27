@@ -91,12 +91,14 @@ void DrawScreen(void)
                 }
             }
 
-            if((i == 0 || i == myGM->getBoardSizeY() - 1) || (j == 0 || j == myGM->getBoardSizeX() - 1)){
-               MacUILib_printf("#");
-            }else if(i == tempFood.y && j == tempFood.x){
-               MacUILib_printf("%c", tempFood.symbol);
-            }else{
-                MacUILib_printf(" ");
+            if(drawn != true){
+                if((i == 0 || i == myGM->getBoardSizeY() - 1) || (j == 0 || j == myGM->getBoardSizeX() - 1)){
+                    MacUILib_printf("#");
+                }else if(i == tempFood.y && j == tempFood.x){
+                    MacUILib_printf("%c", tempFood.symbol);
+                }else{
+                    MacUILib_printf(" ");
+                }
             }
         }
         MacUILib_printf("\n");
