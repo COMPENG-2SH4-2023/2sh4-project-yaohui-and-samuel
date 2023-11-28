@@ -47,7 +47,7 @@ class GameMechs
 
         int getBoardSizeX();
         int getBoardSizeY();
-        int getscore();
+        int getScore();
         void increaseScore();
 
         void generateFood(objPosArrayList *blockOff);   //?

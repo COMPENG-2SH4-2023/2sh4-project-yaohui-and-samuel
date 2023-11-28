@@ -71,7 +71,7 @@ void GameMechs::setExitTrue()
 }
 
 
-int GameMechs::getscore()
+int GameMechs::getScore()
 {
     return score;
 }
@@ -97,6 +97,7 @@ void GameMechs::increaseScore()
 
 void GameMechs::generateFood(objPosArrayList *blockOff)
 {
+    srand(time(NULL));
     int count = 0;
     bool pass = false;
     bool identical = false;

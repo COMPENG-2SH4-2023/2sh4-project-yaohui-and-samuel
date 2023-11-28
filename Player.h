@@ -25,7 +25,7 @@ class Player
 
         bool checkCollision();
         bool checkConsumption();
-        void increaseLength();
+        //void increaseLength();    //do we need this?
 
     private:
         objPosArrayList *playerPos;     

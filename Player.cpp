@@ -88,38 +88,40 @@ void Player::movePlayer()
 
     switch(myDir){
         case UP:
-            currHead.y = (currHead.y - 1) % (col - 2);
-            if(currHead.y < 0){
+            currHead.y = (currHead.y - 1) % (col - 1);
+            if(currHead.y == 0){
                 currHead.y = col - 2;
             }
             break;
         case DOWN:
             currHead.y = (currHead.y + 1) % (col - 1);
+            if(currHead.y == 0){
+                currHead.y = 1;
+            }
             break;
         case LEFT:
             currHead.x = (currHead.x - 1) % (row - 2);
-            if(currHead.x < 0){
+            if(currHead.x == 0){
                 currHead.x = row - 2;
             }
             break;
         case RIGHT:
-            currHead.x = (currHead.x + 1) % (row - 2);
+            currHead.x = (currHead.x + 1) % (row - 1);
+            if(currHead.x == 0){
+                currHead.x = 1;
+            }
             break;
         case STOP:
             break;
         case EXIT:
             mainGameMechsRef->setExitTrue();
             break;
-        // case CHEAT:
-        //     win = 1;
-        //     break;
         default:
             break;
     }
 
     bool consumption = checkConsumption();
     if(consumption){
-        //increaseLength();
         playerPos->insertHead(currHead);
         mainGameMechsRef->increaseScore();
         mainGameMechsRef->generateFood(playerPos);
@@ -147,7 +149,18 @@ bool Player::checkConsumption()
 }
 
 
-// void Player::increaseLength()
-// {
-    
-// }
+bool Player::checkCollision()
+{
+    objPos tempHead;
+    playerPos->getHeadElement(tempHead);
+
+    objPos tempBody;
+    for(int i = 1; i < playerPos->getSize(); i++){
+        playerPos->getElement(tempBody, i);
+        if(tempHead.isPosEqual(&tempBody)){
+            return true;
+        }
+    }
+
+    return false;
+}

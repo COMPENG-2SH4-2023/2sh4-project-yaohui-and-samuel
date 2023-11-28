@@ -47,8 +47,6 @@ void Initialize(void)
     tempPlayerPos = myPlayer->getPlayerPos();
 
     myGM->generateFood(tempPlayerPos);
-
-    srand(time(NULL));
 }
 
 void GetInput(void)
@@ -59,9 +57,19 @@ void GetInput(void)
 
 void RunLogic(void)
 {
+    if(myGM->getLoseFlag() == true || myGM->getWinFlag() == true){
+        myGM->setExitTrue();
+    }
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
+    if(myPlayer->checkCollision() == true){
+        myGM->setLose();
+    }
 
+    int blanks = (myGM->getBoardSizeX() - 2) * (myGM->getBoardSizeY() - 2);
+    if(myPlayer->getPlayerPos()->getSize() == blanks){
+        myGM->setWin();
+    }
 }
 
 void DrawScreen(void)
@@ -80,9 +88,10 @@ void DrawScreen(void)
     //Draw the board
     for(int i = 0; i < myGM->getBoardSizeY(); i++){
         for(int j = 0; j < myGM->getBoardSizeX(); j++){
-
+            
+            //when drawn is true, it means that the current position is already occupied by a part of the snake
+            //so that we don't need to draw anything else
             drawn = false;
-
             for(int k = 0; k < body->getSize(); k++){
                 body->getElement(tempBody, k);
                 if(i == tempBody.y && j == tempBody.x){
@@ -92,6 +101,7 @@ void DrawScreen(void)
                 }
             }
 
+            //continued from above: otherwise there will be extra spaces drawn on the screen!
             if(drawn != true){
                 if((i == 0 || i == myGM->getBoardSizeY() - 1) || (j == 0 || j == myGM->getBoardSizeX() - 1)){
                     MacUILib_printf("#");
@@ -104,7 +114,14 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     }
-    
+    MacUILib_printf("Current game speed: %d\n", DELAY_CONST/1000000);
+    MacUILib_printf("Score: %d\n", myGM->getScore());
+    MacUILib_printf("Press <q> to quit.\n");
+    if(myGM->getLoseFlag() == true){
+        MacUILib_printf("You lose!\n");
+    }else if(myGM->getWinFlag() == true){
+        MacUILib_printf("You win!\n");
+    }
 }
 
 void LoopDelay(void)
