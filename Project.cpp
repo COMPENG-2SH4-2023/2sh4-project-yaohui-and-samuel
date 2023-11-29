@@ -23,16 +23,26 @@ int main(void)
 {
     Initialize();
 
-    while(myGM->getExitFlagStatus() == false)  
+    while (myGM->getExitFlagStatus() == false)
     {
         GetInput();
         RunLogic();
         DrawScreen();
         LoopDelay();
+        if (myGM->getLoseFlag() == true || myGM->getWinFlag() == true)
+        {
+            for (int i = 0; i < 50; ++i) {
+                DrawScreen();
+                LoopDelay();
+            }
+            
+            break;
+        }
     }
 
     CleanUp();
 }
+
 
 
 void Initialize(void)
