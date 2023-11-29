@@ -114,6 +114,7 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     }
+
     MacUILib_printf("Current game speed: %d\n", DELAY_CONST/1000000);
     MacUILib_printf("Score: %d\n", myGM->getScore());
     MacUILib_printf("Press <q> to quit.\n");
@@ -131,7 +132,6 @@ void LoopDelay(void)
 
 
 void CleanUp(void)
-{
-    MacUILib_clearScreen();    
+{  
     MacUILib_uninit();
 }
