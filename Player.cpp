@@ -1,8 +1,9 @@
 #include "Player.h"
 
 
-Player::Player(GameMechs* thisGMRef)
+Player::Player(GameMechs* thisGMRef, Food* foodRef)
 {
+    foodBucket = foodRef;
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
 
@@ -21,6 +22,7 @@ Player::~Player()
     // delete any heap members here
     delete mainGameMechsRef;
     delete playerPos;
+    delete foodBucket;
 }
 
 
@@ -77,12 +79,64 @@ void Player::updatePlayerDir()
     }      
 }
 
+
+//Food 'o' increases the score and length by 1
+//High score food '*' increases the score by 5
+//Shorten food '-' decreases the length by 1
+int Player::checkConsumption()
+{
+    objPosArrayList tempFood;
+    foodBucket->getFoodPos(tempFood);
+
+    int size = tempFood.getSize();
+    for(int i = 0; i < size; i++){
+        objPos tempPos;
+        tempFood.getElement(tempPos, i);
+        char symbol = tempPos.getSymbol();
+        objPos tempHead;
+        playerPos->getHeadElement(tempHead);
+
+        if(tempPos.isPosEqual(&tempHead)){
+            switch(symbol){
+                case 'o':
+                    return 1;
+                    break;
+                case '*':
+                    return 2;
+                    break;
+                case '-':
+                    return 3;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    return -1;
+}
+
+
+bool Player::checkCollision()
+{
+    objPos tempHead;
+    playerPos->getHeadElement(tempHead);
+
+    objPos tempBody;
+    for(int i = 1; i < playerPos->getSize(); i++){
+        playerPos->getElement(tempBody, i);
+        if(tempHead.isPosEqual(&tempBody)){
+            return true;
+        }
+    }
+    return false;
+}
+
+
 void Player::movePlayer()
 {
     int row = mainGameMechsRef->getBoardSizeX();
     int col = mainGameMechsRef->getBoardSizeY();
     
-    objPos newHead;
     objPos currHead;
     playerPos->getHeadElement(currHead);
 
@@ -120,47 +174,30 @@ void Player::movePlayer()
             break;
     }
 
-    bool consumption = checkConsumption();
-    if(consumption){
-        playerPos->insertHead(currHead);
-        mainGameMechsRef->increaseScore();
-        mainGameMechsRef->generateFood(playerPos);
-    }else{
-        playerPos->insertHead(currHead); //Insert the new head into the head of the list
-        playerPos->removeTail(); //Remove the tail of the list
-    }
+    int consumption = checkConsumption();
+    int playerSize = playerPos->getSize();
     
-}
-
-
-bool Player::checkConsumption()
-{
-    objPos tempFood;
-    mainGameMechsRef->getFoodPos(tempFood);
-
-    objPos tempHead;
-    playerPos->getHeadElement(tempHead);
-
-    if(tempHead.isPosEqual(&tempFood)){
-        return true;
-    }else{
-        return false;
-    }
-}
-
-
-bool Player::checkCollision()
-{
-    objPos tempHead;
-    playerPos->getHeadElement(tempHead);
-
-    objPos tempBody;
-    for(int i = 1; i < playerPos->getSize(); i++){
-        playerPos->getElement(tempBody, i);
-        if(tempHead.isPosEqual(&tempBody)){
-            return true;
+    if(consumption > 0){
+        switch(consumption){
+            case 1:
+                playerPos->insertHead(currHead);
+                mainGameMechsRef->increaseScore();
+                break;
+            case 2:
+                for(int i = 0; i < 5; i++){
+                    mainGameMechsRef->increaseScore();
+                }
+                break;
+            case 3:
+                playerPos->removeTail();
+                break;
+            default:
+                break;
         }
+        objPosArrayList& playerPosRef = *playerPos; // Create a reference to playerPos
+        foodBucket->generateFood(playerPosRef, playerSize); // Pass the reference to generateFood
+    }else{
+        playerPos->insertHead(currHead); // Insert the new head into the head of the list
+        playerPos->removeTail(); // Remove the tail of the list
     }
-
-    return false;
 }

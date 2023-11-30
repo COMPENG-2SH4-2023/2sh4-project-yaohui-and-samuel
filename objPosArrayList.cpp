@@ -1,9 +1,11 @@
 #include "objPosArrayList.h"
 
 objPosArrayList::objPosArrayList(){
-    aList = new objPos[ARRAY_MAX_CAP];
+    //aList = new objPos[ARRAY_MAX_CAP];
+    aList = new objPos[1000];
     sizeList = 0;
-    sizeArray = ARRAY_MAX_CAP;
+    //sizeArray = ARRAY_MAX_CAP;
+    sizeArray = 1000;
 }
 
 objPosArrayList::~objPosArrayList(){
@@ -37,6 +39,18 @@ void objPosArrayList::insertTail(objPos thisPos){
     }
 }
 
+void objPosArrayList::removeItem(int index){
+    if(index < 0 || index >= sizeList){
+        //cout << "Index out of bounds" << endl;
+        return;
+    }else{
+        for(int i = index; i < sizeList - 1; i++){
+            aList[i] = aList[i + 1];
+        }
+        sizeList--;
+    }
+}
+
 void objPosArrayList::removeHead(){
     if(sizeList == 0){
         //cout << "Array is empty" << endl;
@@ -55,6 +69,15 @@ void objPosArrayList::removeTail(){
         return;
     }else{
         sizeList--;
+    }
+}
+
+void objPosArrayList::changeItem(int index, objPos thisPos){
+    if(index < 0 || index >= sizeList){
+        //cout << "Index out of bounds" << endl;
+        return;
+    }else{
+        aList[index] = thisPos;
     }
 }
 

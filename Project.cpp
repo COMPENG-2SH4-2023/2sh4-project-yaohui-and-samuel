@@ -3,6 +3,7 @@
 #include "objPos.h"
 #include "GameMechs.h"
 #include "Player.h"
+#include "Food.h"
 
 using namespace std;
 
@@ -10,6 +11,7 @@ using namespace std;
 
 Player* myPlayer;
 GameMechs* myGM;
+Food* myFood;
 
 void Initialize(void);
 void GetInput(void);
@@ -41,12 +43,12 @@ void Initialize(void)
     MacUILib_clearScreen();
     
     myGM = new GameMechs(26, 13);
-    myPlayer = new Player(myGM);
+    myFood = new Food(myGM);
+    myPlayer = new Player(myGM, myFood);
 
-    objPosArrayList* tempPlayerPos;
-    tempPlayerPos = myPlayer->getPlayerPos();
-
-    myGM->generateFood(tempPlayerPos);
+    //this means tempPlayer is a reference to the player's position arraylist's address
+    objPosArrayList& tempPlayerPos = *(myPlayer->getPlayerPos());
+    myFood->generateFood(tempPlayerPos, tempPlayerPos.getSize());
 }
 
 void GetInput(void)
@@ -57,15 +59,18 @@ void GetInput(void)
 
 void RunLogic(void)
 {
+    // Exit check
     if(myGM->getLoseFlag() == true || myGM->getWinFlag() == true){
         myGM->setExitTrue();
     }
+
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
+
+    // Win/lose check
     if(myPlayer->checkCollision() == true){
         myGM->setLose();
     }
-
     int blanks = (myGM->getBoardSizeX() - 2) * (myGM->getBoardSizeY() - 2);
     if(myPlayer->getPlayerPos()->getSize() == blanks){
         myGM->setWin();
@@ -82,8 +87,8 @@ void DrawScreen(void)
     body = myPlayer->getPlayerPos();
     objPos tempBody;
 
-    objPos tempFood;
-    myGM->getFoodPos(tempFood);
+    objPosArrayList food;
+    myFood->getFoodPos(food);
 
     //Draw the board
     for(int i = 0; i < myGM->getBoardSizeY(); i++){
@@ -103,11 +108,20 @@ void DrawScreen(void)
 
             //continued from above: otherwise there will be extra spaces drawn on the screen!
             if(drawn != true){
+                bool drawSpace = true;
                 if((i == 0 || i == myGM->getBoardSizeY() - 1) || (j == 0 || j == myGM->getBoardSizeX() - 1)){
                     MacUILib_printf("#");
-                }else if(i == tempFood.y && j == tempFood.x){
-                    MacUILib_printf("%c", tempFood.symbol);
-                }else{
+                    drawSpace = false;
+                }
+                for(int k = 0; k < food.getSize(); k++){
+                    food.getElement(tempBody, k);
+                    if(i == tempBody.y && j == tempBody.x){
+                        MacUILib_printf("%c", tempBody.symbol);
+                        drawSpace = false;
+                        break;
+                    }
+                }
+                if(drawSpace == true){
                     MacUILib_printf(" ");
                 }
             }
@@ -115,7 +129,7 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     }
 
-    MacUILib_printf("Current game speed: %d\n", DELAY_CONST/1000000);
+    MacUILib_printf("Current game speed: %d s\n", DELAY_CONST/1000000);
     MacUILib_printf("Score: %d\n", myGM->getScore());
     MacUILib_printf("Press <q> to quit.\n");
     if(myGM->getLoseFlag() == true){
@@ -129,7 +143,6 @@ void LoopDelay(void)
 {
     MacUILib_Delay(DELAY_CONST); // 0.1s delay
 }
-
 
 void CleanUp(void)
 {  
