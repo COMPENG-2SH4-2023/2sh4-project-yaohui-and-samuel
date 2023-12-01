@@ -66,9 +66,10 @@ void RunLogic(void)
     myPlayer->movePlayer();
 
     // Win/lose check
-    if(myPlayer->checkCollision() == true){
+    if(myPlayer->checkSuicide() == true){
         myGM->setLose();
     }
+    // When player occupies all the blank spaces on the board, the player wins
     int blanks = (myGM->getBoardSizeX() - 2) * (myGM->getBoardSizeY() - 2);
     if(myPlayer->getPlayerPos()->getSize() == blanks){
         myGM->setWin();

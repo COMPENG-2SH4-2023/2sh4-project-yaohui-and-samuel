@@ -24,7 +24,7 @@ class Player
         void updatePlayerDir();
         void movePlayer();
 
-        bool checkCollision();
+        bool checkSuicide();
         int checkConsumption();
         //void increaseLength();    //do we need this?
 

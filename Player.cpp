@@ -1,6 +1,5 @@
 #include "Player.h"
 
-
 Player::Player(GameMechs* thisGMRef, Food* foodRef)
 {
     foodBucket = foodRef;
@@ -31,6 +30,7 @@ objPosArrayList* Player::getPlayerPos()
     // return the reference to the playerPos array list
     return playerPos;
 }
+
 
 void Player::updatePlayerDir()
 {
@@ -80,9 +80,6 @@ void Player::updatePlayerDir()
 }
 
 
-//Food 'o' increases the score and length by 1
-//High score food '*' increases the score by 5
-//Shorten food '-' decreases the length by 1
 int Player::checkConsumption()
 {
     objPosArrayList tempFood;
@@ -95,7 +92,9 @@ int Player::checkConsumption()
         char symbol = tempPos.getSymbol();
         objPos tempHead;
         playerPos->getHeadElement(tempHead);
-
+        
+        //returns a specific number depending on the food type for identification in movePlayer() later on
+        //1 for normal food, 2 for high score food, 3 for shorten food
         if(tempPos.isPosEqual(&tempHead)){
             switch(symbol){
                 case 'o':
@@ -116,7 +115,7 @@ int Player::checkConsumption()
 }
 
 
-bool Player::checkCollision()
+bool Player::checkSuicide()
 {
     objPos tempHead;
     playerPos->getHeadElement(tempHead);
@@ -177,7 +176,11 @@ void Player::movePlayer()
     int consumption = checkConsumption();
     int playerSize = playerPos->getSize();
     
+    //Food 'o' increases the score and length by 1
+    //High score food '*' increases the score by 5
+    //Shorten food '-' decreases the length by 1
     if(consumption > 0){
+        // 1 for normal food, 2 for high score food, 3 for shorten food
         switch(consumption){
             case 1:
                 playerPos->insertHead(currHead);

@@ -1,7 +1,7 @@
 #ifndef OBJPOS_ARRAYLIST_H
 #define OBJPOS_ARRAYLIST_H
 
-#define ARRAY_MAX_CAP 1000
+#define ARRAY_MAX_CAP 1000    // This will need to  grow larger if the total blank spaces on the board is larger than 1000
 
 #include "objPos.h"
 
