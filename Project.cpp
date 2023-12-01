@@ -24,17 +24,14 @@ void CleanUp(void);
 int main(void)
 {
     Initialize();
-
     while(myGM->getExitFlagStatus() == false){
         GetInput();
         RunLogic();
         DrawScreen();
         LoopDelay();
     }
-    
     CleanUp();
 }
-
 
 void Initialize(void)
 {
@@ -45,7 +42,9 @@ void Initialize(void)
     myFood = new Food(myGM);
     myPlayer = new Player(myGM, myFood);
 
-    //this means tempPlayer is a reference to the player's position arraylist's address
+    // this means tempPlayer is a reference to the player's position arraylist's address
+    // might be the most confusing 2 lines in the entire program
+    // I personally think these 2 lines encorpates 3/4 of the course
     objPosArrayList& tempPlayerPos = *(myPlayer->getPlayerPos());
     myFood->generateFood(tempPlayerPos, tempPlayerPos.getSize());
 }
@@ -113,6 +112,10 @@ void DrawScreen(void)
                     drawSpace = false;
                 }
                 for(int k = 0; k < food.getSize(); k++){
+                    // the use of tempBody might be counter intuitive here
+                    // but since tempBody is already declared above with the type we need
+                    // we can just reuse it here to save some memory
+                    // tempBody at this point is not body, it's food
                     food.getElement(tempBody, k);
                     if(i == tempBody.y && j == tempBody.x){
                         MacUILib_printf("%c", tempBody.symbol);
@@ -130,6 +133,12 @@ void DrawScreen(void)
 
     MacUILib_printf("Current game speed: %d s\n", DELAY_CONST/1000000);
     MacUILib_printf("Score: %d\n", myGM->getScore());
+    MacUILib_printf("\n");
+    MacUILib_printf("Hints:\n");
+    MacUILib_printf("o increases the score and length by 1\n");
+    MacUILib_printf("* increases the score by 5 without increasing length\n");
+    MacUILib_printf("- decreases the length by 1 but does not increase score\n");
+    MacUILib_printf("\n");
     MacUILib_printf("Press <q> to quit.\n");
     if(myGM->getLoseFlag() == true){
         MacUILib_printf("You lose!\n");

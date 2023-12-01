@@ -1,11 +1,11 @@
 #include "objPosArrayList.h"
 
 objPosArrayList::objPosArrayList(){
-    //aList = new objPos[ARRAY_MAX_CAP];
-    aList = new objPos[1000];
+    aList = new objPos[ARRAY_MAX_CAP];
+    //aList = new objPos[1000];
     sizeList = 0;
-    //sizeArray = ARRAY_MAX_CAP;
-    sizeArray = 1000;
+    sizeArray = ARRAY_MAX_CAP;
+    //sizeArray = 1000;
 }
 
 objPosArrayList::~objPosArrayList(){
