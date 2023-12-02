@@ -118,7 +118,7 @@ void DrawScreen(void)
                     // we can just reuse it here to save some memory
                     // tempBody at this point is not body, it's food
                     food.getElement(tempBody, k);
-                    if(i == tempBody.y && j == tempBody.x){
+                    if(i == tempBody.y && j == tempBody.x && tempBody.y != 0){
                         MacUILib_printf("%c", tempBody.symbol);
                         drawSpace = false;
                         break;
